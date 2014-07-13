@@ -1,0 +1,12 @@
+dataset <- read.csv("./household_power_consumption.txt", sep=";", stringsAsFactors = FALSE, na.string = "?")
+dataset$Date <- as.Date(dataset$Date, "%d/%m/%Y")
+subset <- dataset[(dataset$Date == "2007-02-01" | dataset$Date == "2007-02-02" ),]
+subset$Global_active_power <- as.numeric(subset$Global_active_power)
+DateTime <- paste(subset$Date, subset$Time)
+DateTime <- strptime(DateTime, "%Y-%m-%d %H:%M:%S")
+plot(DateTime, subset$Sub_metering_1,type="l", ylab= "Energy sub metering", xlab = "")
+lines(DateTime, subset$Sub_metering_2, col = "red")
+lines(DateTime, subset$Sub_metering_3, col = "blue")
+legend("topright", col = c("black","red","blue"), legend =c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), lty=c(1,1,1))
+dev.copy(png, file = "plot3.png")
+dev.off()
